@@ -8,6 +8,7 @@ interface StudyLeftPanelProps {
   currentView: StudyView;
   onViewChange: (view: StudyView) => void;
   onCreateMaterial?: () => void;
+  onAITuningClick?: () => void;
 }
 
 /**
@@ -16,7 +17,8 @@ interface StudyLeftPanelProps {
 const StudyLeftPanel: React.FC<StudyLeftPanelProps> = ({
   currentView,
   onViewChange,
-  onCreateMaterial
+  onCreateMaterial,
+  onAITuningClick
 }) => {
   const navItems = [
     { id: 'hub' as StudyView, label: 'Study Hub', icon: BookOpen, color: 'cyan' },
@@ -85,7 +87,10 @@ const StudyLeftPanel: React.FC<StudyLeftPanelProps> = ({
           </button>
         )}
 
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+        <button 
+          onClick={onAITuningClick}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200"
+        >
           <Settings size={20} className="text-[var(--text-secondary)]" />
           <span className="text-sm font-medium text-[var(--text-secondary)]">
             AI Tuning
