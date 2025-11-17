@@ -5,6 +5,10 @@ interface ThreePanelLayoutProps {
   centerPanel: React.ReactNode;
   rightPanel: React.ReactNode;
   mobileView?: 'left' | 'center' | 'right';
+  mobileBottomNav?: React.ReactNode;
+  mobileFAB?: React.ReactNode;
+  mobileTopBar?: React.ReactNode;
+  enableSwipeGestures?: boolean;
 }
 
 /**
@@ -18,7 +22,10 @@ const ThreePanelLayout: React.FC<ThreePanelLayoutProps> = ({
   leftPanel,
   centerPanel,
   rightPanel,
-  mobileView = 'center'
+  mobileView = 'center',
+  mobileBottomNav,
+  mobileFAB,
+  mobileTopBar
 }) => {
   return (
     <>
@@ -40,11 +47,23 @@ const ThreePanelLayout: React.FC<ThreePanelLayoutProps> = ({
         </div>
       </div>
 
-      {/* Mobile Layout - Single Panel */}
+      {/* Mobile Layout - Single Panel with Bottom Nav */}
       <div className="md:hidden h-full w-full flex flex-col bg-[var(--bg-primary)]">
-        {mobileView === 'left' && leftPanel}
-        {mobileView === 'center' && centerPanel}
-        {mobileView === 'right' && rightPanel}
+        {/* Mobile Top Bar */}
+        {mobileTopBar}
+        
+        {/* Main Content */}
+        <div className="flex-1 overflow-hidden">
+          {mobileView === 'left' && leftPanel}
+          {mobileView === 'center' && centerPanel}
+          {mobileView === 'right' && rightPanel}
+        </div>
+        
+        {/* Mobile Bottom Navigation */}
+        {mobileBottomNav}
+        
+        {/* Floating Action Button */}
+        {mobileFAB}
       </div>
     </>
   );

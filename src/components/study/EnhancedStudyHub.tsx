@@ -3,6 +3,7 @@ import { BookOpen, Layers, Target, HelpCircle, Trash2, FileText, TrendingUp, Zap
 import type { StudyHubItem, StudyProgress } from '@/src/lib/types';
 import HolographicPanel from '../cyberpunk/HolographicPanel';
 import HolographicText from '../cyberpunk/HolographicText';
+import { getStudyColorVar } from '@/src/lib/studyColors';
 
 interface EnhancedStudyHubProps {
   items: StudyHubItem[];
@@ -12,20 +13,16 @@ interface EnhancedStudyHubProps {
 }
 
 const ItemIcon: React.FC<{ type: StudyHubItem['type'] }> = ({ type }) => {
-  switch (type) {
-    case 'guide':
-      return <FileText size={24} className="text-[var(--accent-cyan)]" />;
-    case 'cards':
-      return <Layers size={24} className="text-[var(--accent-magenta)]" />;
-    case 'practice':
-      return <Target size={24} className="text-[var(--accent-amber)]" />;
-    case 'quiz':
-      return <HelpCircle size={24} className="text-[var(--accent-green)]" />;
-    case 'learningPath':
-      return <TrendingUp size={24} className="text-[var(--accent-amber)]" />;
-    default:
-      return <BookOpen size={24} className="text-[var(--text-secondary)]" />;
-  }
+  const colorVar = getStudyColorVar(type);
+  const iconMap = {
+    guide: FileText,
+    cards: Layers,
+    practice: Target,
+    quiz: HelpCircle,
+    learningPath: TrendingUp,
+  };
+  const Icon = iconMap[type] || BookOpen;
+  return <Icon size={24} className={`text-[var(${colorVar})]`} />;
 };
 
 const ProgressTracker: React.FC<{ progress: StudyProgress }> = ({ progress }) => {

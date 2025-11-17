@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Send, Sparkles, BookOpen } from 'lucide-react';
 import HolographicPanel from '../cyberpunk/HolographicPanel';
 import HolographicText from '../cyberpunk/HolographicText';
+import '@/src/styles/typography.css';
 
 interface Message {
   id: string;
@@ -65,27 +66,22 @@ const StudySession: React.FC<StudySessionProps> = ({ topic, onBack }) => {
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+      <div className="flex-1 overflow-y-auto space-y-4 mb-4 px-2">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <HolographicPanel
-              glowColor={message.sender === 'user' ? 'cyan' : 'magenta'}
-              withCorners={false}
-              withScanlines={false}
-              className={`max-w-[80%] p-4 ${
-                message.sender === 'user'
-                  ? 'bg-[var(--accent-cyan)]/10'
-                  : 'bg-[var(--accent-magenta)]/10'
+            <div
+              className={`chat-message ${
+                message.sender === 'user' ? 'chat-message-user' : 'chat-message-ai'
               }`}
             >
-              <p className="text-sm text-[var(--text-primary)]">{message.content}</p>
-              <p className="text-xs text-[var(--text-secondary)] mt-2">
+              <p className="study-content">{message.content}</p>
+              <p className="text-xs opacity-70 mt-2">
                 {message.timestamp.toLocaleTimeString()}
               </p>
-            </HolographicPanel>
+            </div>
           </div>
         ))}
       </div>

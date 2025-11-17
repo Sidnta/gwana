@@ -61,63 +61,64 @@ const StudyRightPanel: React.FC<StudyRightPanelProps> = ({
 
   return (
     <div className="h-full flex flex-col p-4 space-y-4">
-      {/* AI Avatars - Vertical Stack */}
+      {/* AI Avatars - Primary/Secondary Layout */}
       <HolographicPanel glowColor="cyan" withCorners className="p-4">
-        <div className="flex flex-col items-center space-y-6">
-          {/* Agent Zero */}
-          <div
-            className={`flex flex-col items-center cursor-pointer transition-all duration-300 ${
-              isZeroActive ? 'scale-105' : 'opacity-60 hover:opacity-80'
-            }`}
-            onClick={() => handleSelectPersona('Agent Zero')}
-          >
+        <div className="flex flex-col items-center space-y-4">
+          {/* Primary Agent - Larger, Active */}
+          <div className="flex flex-col items-center">
             <div
               className={`relative transition-all duration-300 ${
-                isZeroSpeaking ? 'animate-pulse' : ''
+                isZeroActive && isZeroSpeaking ? 'animate-pulse' : ''
               }`}
               style={{
-                filter: isZeroSpeaking
+                filter: isZeroActive && isZeroSpeaking
                   ? 'drop-shadow(0 0 20px var(--accent-cyan)) drop-shadow(0 0 40px var(--accent-cyan))'
                   : isZeroActive
                   ? 'drop-shadow(0 0 10px var(--accent-cyan))'
-                  : 'none'
+                  : isZaraSpeaking
+                  ? 'drop-shadow(0 0 20px var(--accent-magenta)) drop-shadow(0 0 40px var(--accent-magenta))'
+                  : 'drop-shadow(0 0 10px var(--accent-magenta))'
               }}
             >
-              <TalkingEmoji persona="Agent Zero" activePersona={speakingPersona} size={100} />
+              <TalkingEmoji 
+                persona={persona} 
+                activePersona={speakingPersona} 
+                size={120} 
+              />
             </div>
-            <HolographicText glowColor="cyan" className="mt-2 text-sm font-medium">
-              Agent Zero
+            <HolographicText 
+              glowColor={isZeroActive ? 'cyan' : 'magenta'} 
+              className="mt-2 text-base font-semibold"
+            >
+              {persona}
             </HolographicText>
           </div>
 
           {/* Divider */}
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--accent-cyan)] to-transparent opacity-30" />
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent" />
 
-          {/* Agent Zara */}
-          <div
-            className={`flex flex-col items-center cursor-pointer transition-all duration-300 ${
-              !isZeroActive ? 'scale-105' : 'opacity-60 hover:opacity-80'
-            }`}
-            onClick={() => handleSelectPersona('Agent Zara')}
+          {/* Secondary Agent - Smaller, Switch Button */}
+          <button
+            onClick={() => handleSelectPersona(isZeroActive ? 'Agent Zara' : 'Agent Zero')}
+            disabled={isSessionActive}
+            className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <div
-              className={`relative transition-all duration-300 ${
-                isZaraSpeaking ? 'animate-pulse' : ''
-              }`}
+              className="relative opacity-70 hover:opacity-100 transition-opacity"
               style={{
-                filter: isZaraSpeaking
-                  ? 'drop-shadow(0 0 20px var(--accent-magenta)) drop-shadow(0 0 40px var(--accent-magenta))'
-                  : !isZeroActive
-                  ? 'drop-shadow(0 0 10px var(--accent-magenta))'
-                  : 'none'
+                filter: 'grayscale(0.3)'
               }}
             >
-              <TalkingEmoji persona="Agent Zara" activePersona={speakingPersona} size={100} />
+              <TalkingEmoji 
+                persona={isZeroActive ? 'Agent Zara' : 'Agent Zero'} 
+                activePersona={null} 
+                size={60} 
+              />
             </div>
-            <HolographicText glowColor="magenta" className="mt-2 text-sm font-medium">
-              Agent Zara
-            </HolographicText>
-          </div>
+            <span className="text-xs text-[var(--text-secondary)] font-medium">
+              Switch to {isZeroActive ? 'Zara' : 'Zero'}
+            </span>
+          </button>
         </div>
       </HolographicPanel>
 
